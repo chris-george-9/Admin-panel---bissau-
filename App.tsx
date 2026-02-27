@@ -68,8 +68,8 @@ const App: React.FC = () => {
     addLog(`Changed order ${orderId} status to ${status}`, orderId);
   };
 
-  const updateOrderTracking = (orderId: string, trackingId: string) => {
-    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, trackingId, updatedAt: new Date().toISOString() } : o));
+  const updateOrderTracking = (orderId: string, trackingId: string, trackingUrl: string) => {
+    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, trackingId, trackingUrl, updatedAt: new Date().toISOString() } : o));
     addLog(`Updated tracking ID for order ${orderId} to ${trackingId}`, orderId);
   };
 
@@ -288,6 +288,7 @@ const App: React.FC = () => {
               searchTerm={globalSearch} 
               onUpdateStatus={updateCustomerStatus}
               savedRecipients={savedRecipients}
+              orders={orders}
             />
           )}
           {activeView === 'fraud' && <FraudMonitoring orders={orders} />}

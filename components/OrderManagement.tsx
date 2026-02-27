@@ -293,6 +293,25 @@ const OrderManagement: React.FC<OrderManagementProps> = ({
                     </div>
                     {saveStatus && <p className="text-[10px] font-bold text-orange-500 mb-2 animate-pulse">{saveStatus}</p>}
                     <div className="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                      {selectedOrder.trackingUrl && (
+                        <div className="mb-3 pb-3 border-b border-slate-200">
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Recipient Tracking Link</p>
+                          <div className="flex items-center gap-2">
+                            <input 
+                              readOnly 
+                              value={selectedOrder.trackingUrl} 
+                              className="flex-1 text-xs bg-white border border-slate-200 rounded px-2 py-1 text-slate-600 truncate outline-none"
+                            />
+                            <button 
+                              onClick={() => navigator.clipboard.writeText(selectedOrder.trackingUrl!)}
+                              className="p-1.5 bg-white border border-slate-200 rounded hover:bg-slate-50 text-slate-500 transition-colors"
+                              title="Copy Link"
+                            >
+                              <Copy size={12} />
+                            </button>
+                          </div>
+                        </div>
+                      )}
                       <div className="flex items-start gap-3">
                         <MapPin size={18} className="text-slate-400 mt-0.5" />
                         <div>

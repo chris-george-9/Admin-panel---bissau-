@@ -27,9 +27,10 @@ interface CustomerManagementProps {
   searchTerm: string;
   onUpdateStatus: (customerId: string, status: 'Active' | 'Blocked') => void;
   savedRecipients: SavedRecipient[];
+  orders: Order[];
 }
 
-const CustomerManagement: React.FC<CustomerManagementProps> = ({ customers, searchTerm, onUpdateStatus, savedRecipients }) => {
+const CustomerManagement: React.FC<CustomerManagementProps> = ({ customers, searchTerm, onUpdateStatus, savedRecipients, orders }) => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
   const filteredCustomers = useMemo(() => {
@@ -42,8 +43,8 @@ const CustomerManagement: React.FC<CustomerManagementProps> = ({ customers, sear
 
   const customerOrders = useMemo(() => {
     if (!selectedCustomer) return [];
-    return MOCK_ORDERS.filter(o => o.customerName === selectedCustomer.name);
-  }, [selectedCustomer]);
+    return orders.filter(o => o.customerName === selectedCustomer.name);
+  }, [selectedCustomer, orders]);
 
   const customerRecipients = useMemo(() => {
     if (!selectedCustomer) return [];
@@ -228,25 +229,50 @@ const CustomerManagement: React.FC<CustomerManagementProps> = ({ customers, sear
               </div>
             </div>
 
-            {/* Recipients */}
+             {/* Recipients */}
             <div>
                <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 mb-4">
                 <Users size={14} /> Recipient Network
               </h5>
               <div className="space-y-3">
-                 {customerRecipients.length > 0 ? customerRecipients.map((r, idx) => (
-                   <div key={idx} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
-                      <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold">
-                        {r.name.charAt(0)}
+                 {customerRecipients.length > 0 ? customerRecipients.map((r, idx) => {
+                   // Calculate stats for this recipient
+                   const recipientOrders = orders.filter(o => o.recipient.name === r.name && o.customerName === selectedCustomer.name);
+                   const totalReceived = recipientOrders.reduce((sum, o) => sum + o.totalGBP, 0);
+                   const lastOrderDate = recipientOrders.length > 0 
+                     ? new Date(Math.max(...recipientOrders.map(o => new Date(o.createdAt).getTime()))).toLocaleDateString()
+                     : 'N/A';
+
+                   return (
+                   <div key={idx} className="flex flex-col gap-2 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold">
+                          {r.name.charAt(0)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-slate-800 truncate">{r.name}</p>
+                          <p className="text-[10px] text-slate-500 truncate">{r.location}</p>
+                        </div>
+                        <ArrowUpRight size={14} className="text-slate-300" />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold text-slate-800 truncate">{r.name}</p>
-                        <p className="text-[10px] text-slate-500 truncate">{r.location}</p>
-                        <p className="text-[10px] text-slate-400 truncate">{r.phone}</p>
+                      
+                      <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-200/50">
+                        <div className="text-center">
+                          <p className="text-[9px] text-slate-400 uppercase font-bold">Orders</p>
+                          <p className="text-xs font-bold text-slate-700">{recipientOrders.length}</p>
+                        </div>
+                        <div className="text-center border-l border-slate-200/50">
+                          <p className="text-[9px] text-slate-400 uppercase font-bold">Value</p>
+                          <p className="text-xs font-bold text-emerald-600">£{totalReceived.toFixed(0)}</p>
+                        </div>
+                        <div className="text-center border-l border-slate-200/50">
+                          <p className="text-[9px] text-slate-400 uppercase font-bold">Last</p>
+                          <p className="text-xs font-bold text-slate-600">{lastOrderDate}</p>
+                        </div>
                       </div>
-                      <ArrowUpRight size={14} className="text-slate-300" />
                    </div>
-                 )) : (
+                   );
+                 }) : (
                    <div className="text-center py-6 bg-slate-50 rounded-xl border border-dashed border-slate-200">
                      <p className="text-xs text-slate-400">No saved recipients found.</p>
                    </div>

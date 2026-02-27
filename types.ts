@@ -103,6 +103,7 @@ export interface Order {
   driverName?: string;
   podImage?: string; // Base64 or URL for proof of delivery
   trackingId?: string; // External or internal tracking number
+  trackingUrl?: string; // URL for recipient to track order
 }
 
 export interface Product {

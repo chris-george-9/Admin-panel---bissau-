@@ -27,7 +27,7 @@ interface FulfillmentProps {
   orders: Order[];
   onCompleteDelivery: (id: string, podData?: string) => void;
   onAssignDriver: (id: string, driverName: string) => void;
-  onUpdateTracking: (id: string, trackingId: string) => void;
+  onUpdateTracking: (id: string, trackingId: string, trackingUrl: string) => void;
 }
 
 const Fulfillment: React.FC<FulfillmentProps> = ({ orders, onCompleteDelivery, onAssignDriver, onUpdateTracking }) => {
@@ -272,7 +272,9 @@ const Fulfillment: React.FC<FulfillmentProps> = ({ orders, onCompleteDelivery, o
                         <button 
                           onClick={() => {
                             if (trackingInputs[order.id]) {
-                              onUpdateTracking(order.id, trackingInputs[order.id]);
+                              const trackingId = trackingInputs[order.id];
+                              const trackingUrl = `https://track.nhakinhon.com/${trackingId}`;
+                              onUpdateTracking(order.id, trackingId, trackingUrl);
                               setTrackingInputs(prev => {
                                 const next = { ...prev };
                                 delete next[order.id];
