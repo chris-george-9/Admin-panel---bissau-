@@ -142,10 +142,10 @@ const App: React.FC = () => {
       <aside className="w-64 bg-slate-900 text-white flex flex-col">
         <div className="p-6 border-b border-slate-800 flex items-center gap-3">
           <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center font-bold text-xl">
-            BX
+            NK
           </div>
           <div>
-            <h1 className="font-bold text-lg leading-tight">BissauExpress</h1>
+            <h1 className="font-bold text-lg leading-tight">Nha Kinhon</h1>
             <p className="text-xs text-slate-400">Operations Console</p>
           </div>
         </div>
@@ -291,7 +291,7 @@ const App: React.FC = () => {
             />
           )}
           {activeView === 'fraud' && <FraudMonitoring orders={orders} />}
-          {activeView === 'analytics' && <Analytics orders={orders} inventory={inventory} />}
+          {activeView === 'analytics' && <Analytics orders={orders} inventory={inventory} customers={customers} />}
           {activeView === 'fulfillment' && (
             <Fulfillment 
               orders={orders} 
@@ -307,7 +307,7 @@ const App: React.FC = () => {
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl animate-in zoom-in-95 duration-200">
             <h3 className="text-2xl font-bold text-slate-800 mb-2">Logout</h3>
-            <p className="text-slate-500 mb-8">Are you sure you want to exit the BissauExpress Operations Console?</p>
+            <p className="text-slate-500 mb-8">Are you sure you want to exit the Nha Kinhon Operations Console?</p>
             <div className="flex gap-4">
               <button onClick={() => setShowLogoutConfirm(false)} className="flex-1 py-3 border border-slate-200 rounded-xl font-bold hover:bg-slate-50">Cancel</button>
               <button onClick={() => window.location.reload()} className="flex-1 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 shadow-lg shadow-red-200">Logout</button>

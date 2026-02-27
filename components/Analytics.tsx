@@ -15,15 +15,16 @@ import {
 } from 'recharts';
 import { Download, FileText, Calendar, Filter } from 'lucide-react';
 import { REVENUE_DATA, PRODUCTS } from '../constants';
-import { Order, InventoryItem } from '../types';
+import { Order, InventoryItem, Customer } from '../types';
 
 // Fix: Add prop definition for Analytics component
 interface AnalyticsProps {
   orders: Order[];
   inventory: InventoryItem[];
+  customers: Customer[];
 }
 
-const Analytics: React.FC<AnalyticsProps> = ({ orders, inventory }) => {
+const Analytics: React.FC<AnalyticsProps> = ({ orders, inventory, customers }) => {
   const categoryData = [
     { name: 'Rice & Staples', value: 45 },
     { name: 'Cooking Oil', value: 25 },
@@ -31,7 +32,34 @@ const Analytics: React.FC<AnalyticsProps> = ({ orders, inventory }) => {
     { name: 'Hygiene/Other', value: 10 },
   ];
 
-  const COLORS = ['#f97316', '#3b82f6', '#10b981', '#6366f1'];
+  const COLORS = ['#f97316', '#3b82f6', '#10b981', '#6366f1', '#8b5cf6', '#ec4899'];
+
+  // Calculate Expat Order Locations
+  const expatLocationData = React.useMemo(() => {
+    const locationCounts: Record<string, number> = {};
+    customers.forEach(customer => {
+      const country = customer.country;
+      locationCounts[country] = (locationCounts[country] || 0) + customer.totalOrders;
+    });
+    return Object.keys(locationCounts).map(country => ({
+      name: country,
+      value: locationCounts[country]
+    })).sort((a, b) => b.value - a.value);
+  }, [customers]);
+
+  // Calculate Delivery Fulfillment Locations
+  const deliveryLocationData = React.useMemo(() => {
+    const locationCounts: Record<string, number> = {};
+    orders.forEach(order => {
+      // Extract city from location string (assuming format "City - Detail" or just "City")
+      const location = order.recipient.location.split('-')[0].trim();
+      locationCounts[location] = (locationCounts[location] || 0) + 1;
+    });
+    return Object.keys(locationCounts).map(location => ({
+      name: location,
+      value: locationCounts[location]
+    })).sort((a, b) => b.value - a.value);
+  }, [orders]);
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -91,6 +119,38 @@ const Analytics: React.FC<AnalyticsProps> = ({ orders, inventory }) => {
                 <Tooltip />
                 <Legend iconType="circle" />
               </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Expat Order Locations Chart */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 className="font-bold mb-8 text-slate-800">Top Expat Order Locations</h3>
+          <div className="h-[350px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={expatLocationData} layout="vertical" margin={{ left: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9" />
+                <XAxis type="number" hide />
+                <YAxis dataKey="name" type="category" width={100} tick={{fill: '#64748b', fontSize: 12, fontWeight: 600}} axisLine={false} tickLine={false} />
+                <Tooltip cursor={{fill: '#f8fafc'}} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
+                <Bar dataKey="value" fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={30} label={{ position: 'right', fill: '#64748b', fontSize: 12 }} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Delivery Fulfillment Locations Chart */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 className="font-bold mb-8 text-slate-800">Top Delivery Locations (Bissau)</h3>
+          <div className="h-[350px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={deliveryLocationData} layout="vertical" margin={{ left: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9" />
+                <XAxis type="number" hide />
+                <YAxis dataKey="name" type="category" width={100} tick={{fill: '#64748b', fontSize: 12, fontWeight: 600}} axisLine={false} tickLine={false} />
+                <Tooltip cursor={{fill: '#f8fafc'}} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
+                <Bar dataKey="value" fill="#10b981" radius={[0, 4, 4, 0]} barSize={30} label={{ position: 'right', fill: '#64748b', fontSize: 12 }} />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>

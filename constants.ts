@@ -20,11 +20,11 @@ export const MOCK_DRIVERS: Driver[] = [
 ];
 
 export const MOCK_USERS: User[] = [
-  { id: 'u1', name: 'Alvaro Dinis', email: 'alvaro@bissauexpress.com', role: UserRole.ADMIN, department: Department.LONDON, status: 'Active', lastLogin: '2024-05-15T09:00:00Z' },
-  { id: 'u2', name: 'Beatriz Gomes', email: 'beatriz@bissauexpress.com', role: UserRole.ACCOUNTANT, department: Department.LONDON, status: 'Active', lastLogin: '2024-05-14T17:30:00Z' },
-  { id: 'u3', name: 'Ibrahim Sanha', email: 'ibrahim@bissauexpress.com', role: UserRole.WAREHOUSE_MANAGER, department: Department.BISSAU, status: 'Active', lastLogin: '2024-05-15T07:15:00Z' },
-  { id: 'u4', name: 'Moussa Balde', email: 'moussa@bissauexpress.com', role: UserRole.LOGISTICS_LEAD, department: Department.BISSAU, status: 'Active', lastLogin: '2024-05-15T08:45:00Z' },
-  { id: 'u5', name: 'Elena Costa', email: 'elena@bissauexpress.com', role: UserRole.OPERATIONS_SPECIALIST, department: Department.BISSAU, status: 'Active', lastLogin: '2024-05-13T10:00:00Z' },
+  { id: 'u1', name: 'Alvaro Dinis', email: 'alvaro@nhakinhon.com', role: UserRole.ADMIN, department: Department.LONDON, status: 'Active', lastLogin: '2024-05-15T09:00:00Z' },
+  { id: 'u2', name: 'Beatriz Gomes', email: 'beatriz@nhakinhon.com', role: UserRole.ACCOUNTANT, department: Department.LONDON, status: 'Active', lastLogin: '2024-05-14T17:30:00Z' },
+  { id: 'u3', name: 'Ibrahim Sanha', email: 'ibrahim@nhakinhon.com', role: UserRole.WAREHOUSE_MANAGER, department: Department.BISSAU, status: 'Active', lastLogin: '2024-05-15T07:15:00Z' },
+  { id: 'u4', name: 'Moussa Balde', email: 'moussa@nhakinhon.com', role: UserRole.LOGISTICS_LEAD, department: Department.BISSAU, status: 'Active', lastLogin: '2024-05-15T08:45:00Z' },
+  { id: 'u5', name: 'Elena Costa', email: 'elena@nhakinhon.com', role: UserRole.OPERATIONS_SPECIALIST, department: Department.BISSAU, status: 'Active', lastLogin: '2024-05-13T10:00:00Z' },
 ];
 
 export const MOCK_CUSTOMERS: Customer[] = [

@@ -1,6 +1,6 @@
 {
-  "name": "BissauExpress Ops Portal",
-  "description": "A professional operations and administrative dashboard for BissauExpress, managing cross-border provision orders, warehouse inventory, and local fulfillment for the expat community.",
+  "name": "Nha Kinhon Ops Portal",
+  "description": "A professional operations and administrative dashboard for Nha Kinhon, managing cross-border provision orders, warehouse inventory, and local fulfillment for the expat community.",
   "requestFramePermissions": [
     "camera"
   ]
